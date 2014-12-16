@@ -34,7 +34,8 @@ class ConfigurationController extends \BaseController {
 		$items = Configuration::all();
 		
 		return Response::json(array(
-				'error' => false),
+				'error' => false,
+				'data' => $items->toArray()),
 				200
 		);
 	}

@@ -4,9 +4,11 @@
 
 var configurationControllers = angular.module('configurationControllers', []);
 
-configurationControllers.controller('GeneralCtrl', [ '$scope', 'Item',
-		function($scope, Item) {
+configurationControllers.controller('GeneralCtrl', 
+		function($scope, $timeout, itemFactory, alertFactory) {
 	
+			loadItems();
+			$scope.alertFactory = alertFactory;			
 			
 			$scope.open = function(selection) {
 				if (typeof selection != "undefined") {
@@ -14,7 +16,7 @@ configurationControllers.controller('GeneralCtrl', [ '$scope', 'Item',
 					$scope.dialogTitle = "Edit Item";
 				}
 				else {
-					$scope.item = new Item();
+					$scope.item = new itemFactory();
 					$scope.dialogTitle = "Add Item";
 				}
 				$scope.myModal = true;
@@ -24,35 +26,51 @@ configurationControllers.controller('GeneralCtrl', [ '$scope', 'Item',
 				$scope.myModal = false;
 			};
 			
-			$scope.updateView = function (){
-				Item.query( function (data){
-					$scope.items = data;
-				});
-			};
-			
 			$scope.saveItem = function() {
 				if(typeof $scope.item.id != "undefined" && $scope.item.id > 0){
-					$scope.item.$update();
+										
+					itemFactory.update($scope.item, saveSuccess, saveFailed);
 				}
 				else {
-					$scope.item.$save();
+					itemFactory.save($scope.item, saveSuccess, saveFailed);
 				}
-				
-				$scope.updateView();
 				$scope.myModal = false;
 			};
 			
 			$scope.deleteItem = function(selection){
 				if (typeof selection != "undefined" && selection.id > 0) {
 					$scope.item = selection;
-					$scope.item.$delete({id: selection.id});
-					$scope.updateView();
-					$scope.item = new Item();
+					$scope.item.$delete({id: selection.id}, deleteSuccess, saveFailed);
+					$scope.item = new itemFactory();
 				}
 			};
 			
-			$scope.updateView();
-		} ]);
+			$scope.saveSuccess = saveSuccess;
+			$scope.deleteSuccess = deleteSuccess;
+			$scope.saveFailed = saveFailed;
+			
+			function deleteSuccess(value, responseHeaders)
+			{
+				index = $scope.alertFactory.addAlert('success', 'Item Deleted!');
+				loadItems();				
+			}
+			
+			function saveSuccess(value, responseHeaders)
+			{
+				index = $scope.alertFactory.addAlert('success', 'Item Saved!');
+				loadItems();				
+				
+			}
+			
+			function saveFailed(httpResponse)
+			{
+				$scope.alertFactory.addAlert('danger', 'Error! Server responded with: '+httpResponse);
+			}
+			
+			function loadItems(){
+				$scope.items = itemFactory.query();
+			}
+		});
 
 var panelControllers = angular.module('panelControllers', []);
 
@@ -66,3 +84,4 @@ panelControllers.controller('MainPanelCtrl', [ '$scope', function() {
 	};
 
 } ]);
+

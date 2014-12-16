@@ -2,7 +2,7 @@
  * 
  */
 
-var app = angular.module('configurationApp', [ 'ui.bootstrap.modal', 'ngRoute',
+var app = angular.module('configurationApp', ['ui.bootstrap','ui.bootstrap.modal', 'ngRoute',
 		'configServices', 'configurationControllers', 'panelControllers' ]);
 
 app.directive('ngConfirmClick', [ function() {

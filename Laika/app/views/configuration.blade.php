@@ -6,7 +6,7 @@
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src="bower_components/angular-ui/build/angular-ui.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="js/angular-ui-bootstrap-modal.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
@@ -16,18 +16,16 @@
 </head>
 <body>
 
-
-
-
-
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-10">
+			
+			<div ng-controller="GeneralCtrl">
+  				<alert ng-repeat="alert in alertFactory.alerts" type="{{alert.type}}" close="alertFactory.closeAlert($index)">{{alert.msg}}</alert>  				
+			</div>
+			
 			<div class="page-header">
-				<h2>System Configuration</h2>
-				<div class="alert" ng-show="flash.getMessage()">
-					<p>{{flash.getMessage()}}</p>
-				</div>
+				<h2>System Configuration</h2>		
 			</div>
 			<secion ng-controller="MainPanelCtrl as panel">
 			<ul class="nav nav-pills">
