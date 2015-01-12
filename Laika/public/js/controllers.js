@@ -4,73 +4,50 @@
 
 var configurationControllers = angular.module('configurationControllers', []);
 
-configurationControllers.controller('GeneralCtrl', 
-		function($scope, $timeout, itemFactory, alertFactory) {
-	
-			loadItems();
-			$scope.alertFactory = alertFactory;			
-			
-			$scope.open = function(selection) {
-				if (typeof selection != "undefined") {
-					$scope.item = selection;
-					$scope.dialogTitle = "Edit Item";
-				}
-				else {
-					$scope.item = new itemFactory();
-					$scope.dialogTitle = "Add Item";
-				}
-				$scope.myModal = true;
-			};
+configurationControllers.controller('ConfigCtrl', function($scope, DBService) {
 
-			$scope.cancel = function() {
-				$scope.myModal = false;
-			};
-			
-			$scope.saveItem = function() {
-				if(typeof $scope.item.id != "undefined" && $scope.item.id > 0){
-										
-					itemFactory.update($scope.item, saveSuccess, saveFailed);
-				}
-				else {
-					itemFactory.save($scope.item, saveSuccess, saveFailed);
-				}
-				$scope.myModal = false;
-			};
-			
-			$scope.deleteItem = function(selection){
-				if (typeof selection != "undefined" && selection.id > 0) {
-					$scope.item = selection;
-					$scope.item.$delete({id: selection.id}, deleteSuccess, saveFailed);
-					$scope.item = new itemFactory();
-				}
-			};
-			
-			$scope.saveSuccess = saveSuccess;
-			$scope.deleteSuccess = deleteSuccess;
-			$scope.saveFailed = saveFailed;
-			
-			function deleteSuccess(value, responseHeaders)
-			{
-				index = $scope.alertFactory.addAlert('success', 'Item Deleted!');
-				loadItems();				
+	$scope.init = function(path)
+	{
+		$scope.path = path;
+		$scope.items = DBService.loadItems(path);
+		
+		$scope.save = function(item)
+		{
+			DBService.saveItem(item, path);					
+			$scope.myModal = false;
+			$scope.items = DBService.loadItems(path);	
+		};
+		
+		$scope.delete = function(item)
+		{
+			DBService.deleteItem(item, path);
+			$scope.items = DBService.loadItems(path);
+		};
+		
+		$scope.close = function()
+		{
+			$scope.myModal = false;
+			$scope.items = DBService.loadItems(path);
+		};
+		
+		$scope.open = function(selection) {
+			if (typeof selection != "undefined") {
+				$scope.item = selection;
+				$scope.dialogTitle = "Edit Item";
+			} else {
+				$scope.item = DBService.getNewItem();
+				$scope.dialogTitle = "Add Item";
 			}
-			
-			function saveSuccess(value, responseHeaders)
-			{
-				index = $scope.alertFactory.addAlert('success', 'Item Saved!');
-				loadItems();				
-				
-			}
-			
-			function saveFailed(httpResponse)
-			{
-				$scope.alertFactory.addAlert('danger', 'Error! Server responded with: '+httpResponse);
-			}
-			
-			function loadItems(){
-				$scope.items = itemFactory.query();
-			}
-		});
+			$scope.myModal = true;
+		};	
+	}
+
+});
+
+configurationControllers.controller('AlertCtrl', function($scope, alertService){
+	$scope.alerts = alertService;
+});
+
 
 var panelControllers = angular.module('panelControllers', []);
 
@@ -84,4 +61,3 @@ panelControllers.controller('MainPanelCtrl', [ '$scope', function() {
 	};
 
 } ]);
-
