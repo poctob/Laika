@@ -28,7 +28,7 @@
 			<div class="page-header">
 				<h2>System Configuration</h2>
 			</div>
-			<secion ng-controller="MainPanelCtrl as panel">
+			<section ng-controller="MainPanelCtrl as panel">
 			<ul class="nav nav-pills">
 				<li ng-class="{ active:panel.isSelected(1) }"><a href
 					ng-click="panel.selectTab(1)">Employees</a></li>
@@ -46,6 +46,7 @@
 			<div data-ng-include="'privilegeConfiguration.html'"></div>
 			<div data-ng-include="'timeOffStatusConfiguration.html'"></div>
 			<div data-ng-include="'advancedConfiguration.html'"></div>
+			</section>			
 		</div>
 	</div>
 

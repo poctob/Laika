@@ -5,6 +5,12 @@
 var app = angular.module('configurationApp', ['ui.bootstrap','ui.bootstrap.modal', 'ngRoute',
 		'configServices', 'configurationControllers', 'panelControllers' ]);
 
+var scheduleApp = angular.module('scheduleApp', ['ui.bootstrap','ui.bootstrap.modal', 'ngRoute',
+                                      		'configServices',
+                                      		'configurationControllers',
+                                      		'scheduleControllers', 
+                                      		'panelControllers' ]);
+
 app.directive('ngConfirmClick', [ function() {
 	return {
 		link : function(scope, element, attr) {

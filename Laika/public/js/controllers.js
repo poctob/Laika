@@ -1,8 +1,16 @@
 /**
- * 
+ * Schedule controllers 
  */
+var scheduleControllers = angular.module('scheduleControllers', []);
 
+scheduleControllers.controller('ScheduleCtrl', function($scope, DBService) {
+	
+});
+/**
+ * Configration controllers 
+ */
 var configurationControllers = angular.module('configurationControllers', []);
+
 
 configurationControllers.controller('ConfigCtrl', function($scope, DBService) {
 

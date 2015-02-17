@@ -1,0 +1,49 @@
+<html class="ng-scope" lang="en" ng-app="scheduleApp">
+<head>
+<title>Scheduler</title>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="js/angular-ui-bootstrap-modal.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/services.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+</head>
+<body>
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-10">
+
+			<div ng-controller="AlertCtrl">
+				<alert ng-repeat="alert in alerts.alerts" type="{{alert.type}}"
+					close="alerts.closeAlert()">{{alert.msg}}</alert>
+			</div>
+
+			<div class="page-header">
+				<h2>Sheduler</h2>
+			</div>
+			<section ng-controller="ScheduleCtrl as schedule">
+				<table class="table table-bordered table-condensed" ng-controller="ConfigCtrl"
+					ng-init="init('position')">
+					<thead>
+						<tr class="success">
+							<th>Time</th>							
+							<th ng-repeat="position in items">{{position.name}}</th>
+						</tr>
+					</thead>
+				</table>
+			</section>
+		</div>		
+	</div>
+
+
+
+
+</body>
+</html>

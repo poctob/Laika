@@ -1,5 +1,5 @@
 <?php
-
+use App\Util\DateTimeUtil;
 class ConfigurationController extends \DBObjectController {
 
 	protected function getObjectName(){
@@ -11,6 +11,12 @@ class ConfigurationController extends \DBObjectController {
 		$object->configID = Input::get('configID');
 		$object->configValue = Input::get('configValue');
 		$object->save();
+	}
+	
+	protected function getTimeIntervals()
+	{
+		$object = $this->getObjectName();
+		$items = $object::all();
 	}
 	
 }
