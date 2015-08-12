@@ -40,39 +40,36 @@ abstract class DBObjectController extends Controller {
 				'data' => $items->toArray()]);
 	}
 	
-	public function updateJSON()
+	public function updateJSON(Request $request)
 	{		
-		$item = $this->getJSONById(Input::get('id'));
-		$this->saveJSON($item);
+		$item = $this->getJSONById($request->input('id'));
+		$this->saveJSON($request, $item);
 	
-		return Response::json(array(
-				'error' => false),
-				200
-		);
+		return response()->json([
+				'error' => false,
+				'data' => $items->toArray()]);
 	}
 
-	public function deleteJSON()
+	public function deleteJSON(Request $request)
 	{
 		
-		$item = $this->getJSONById(Input::get('id'));
+		$item = $this->getJSONById($request->input('id'));
 		
 		if(isset($item))
 		{
 			$item->delete();
 			
-			return Response::json(array(
-					'error' => false),
-					200
-			);
+			return response()->json([
+					'error' => false,
+                                        'data' => $item->toArray()]);
 		}
 		else
 		{
-			return Response::json(array(
+			return response()->json([
 					'error' => true,
-					'message' => 'Empty or invalid item Id!'
-			),
-					500
-			);
+					'message' => 'Empty or invalid item Id!',
+                                        'id' => $request->input('id')
+			]);
 		}
 	}
 
